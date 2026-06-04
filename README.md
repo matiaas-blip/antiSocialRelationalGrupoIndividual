@@ -13,13 +13,13 @@ _________________________________________________________
 
 # Tecnologías utilizadas
 
-Node.js
-Express.js
-Sequelize
-SQLite
-Swagger
-Multer
-Dotenv
+- Node.js
+- Express.js
+- Sequelize
+- SQLite
+- Swagger
+- Multer
+- Dotenv
 _________________________________________________________
 
 # Instalacion
@@ -76,13 +76,17 @@ _________________________________________________________
 1:N
 
 User → Posts
+
 User → Comments
+
 Post → Comments
+
 Post → Images
 
 N:M
 
 Posts ↔ Tags
+
 Users ↔ Followers
 _________________________________________________________
 
@@ -98,48 +102,66 @@ _________________________________________________________
 
 El proyecto utiliza SQLite mediante Sequelize.
 
-Archivo generado: database.sqlite
+Archivo generado: 
+
+   -  database.sqlite
 _________________________________________________________
 
 # Endpoints principales
 
    - Users:
-      GET /users
-      POST /users
-      PUT /users/:id
-      DELETE /users/:id
+      - GET /users
+      - POST /users
+      - PUT /users/:id
+      - DELETE /users/:id
 
    - Posts: 
-      GET /posts
-      POST /posts
-      PUT /posts/:id
-      DELETE /posts/:id
+      - GET /posts
+      - POST /posts
+      - PUT /posts/:id
+      - DELETE /posts/:id
 
    - Comments:
-      GET /comments
-      POST /comments
-      DELETE /comments/:id
+      - GET /comments
+      - POST /comments
+      - DELETE /comments/:id
 
    - Tags:
-      GET /tags
-      POST /tags
+      - GET /tags
+      - POST /tags
 
    - Upload imagenes:
-      POST /posts/:id/images
+      - POST /posts/:id/images
 
    - Asociacion tags:
-      POST /posts/:id/tags
+      - POST /posts/:id/tags
 _________________________________________________________
 
 # Estructura del proyecto
 
- src/
- ├── config/
- ├── models/
- ├── routes/
- ├── uploads/
- ├── swagger/
- └── server.js
+ ```text
+src/
+├── config/
+│   └── database.js
+├── models/
+│   ├── User.js
+│   ├── Post.js
+│   ├── Comment.js
+│   ├── Tag.js
+│   ├── PostImage.js
+│   └── index.js
+├── routes/
+│   ├── users.routes.js
+│   ├── posts.routes.js
+│   ├── comments.routes.js
+│   └── tags.routes.js
+├── uploads/
+├── swagger/
+│   └── swagger.yaml
+├── middlewares/
+│   └── errorHandler.js
+└── server.js
+```
 
  _________________________________________________________
 
@@ -148,8 +170,10 @@ _________________________________________________________
 
 # Diagrama Entidad Relación
 
-Ver archivo: assets/DER.png
+Ver archivo: 
+   - assets/DER.png
 
 # Coleccion de PostMan
 
-Ver archivo: assets/Unahur Anti Social Net.postman_collection.json
+Ver archivo:  
+   - assets/Unahur Anti Social Net.postman_collection.json
