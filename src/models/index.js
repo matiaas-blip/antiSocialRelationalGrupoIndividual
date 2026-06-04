@@ -31,15 +31,15 @@ module.exports = {
 }
 
 User.belongsToMany(User, {
-    through: "Followers",
-    as: "following",
-    foreignKey: "followerId",
-    otherKey: "followingId"
+    through: "Seguidores",
+    as: "seguir",
+    foreignKey: "seguidorId",
+    otherKey: "siguiendoId"
 })
 
 User.belongsToMany(User, {
-    through: "Followers",
-    as: "followers",
-    foreignKey: "followingId",
-    otherKey: "followerId"
+    through: "Seguidores",
+    as: "seguidores",
+    foreignKey: "siguiendoId",
+    otherKey: "seguidorId"
 })

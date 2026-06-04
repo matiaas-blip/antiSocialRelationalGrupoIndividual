@@ -2,21 +2,29 @@ const { DataTypes } = require("sequelize")
 const sequelize = require("../config/database")
 
 const User = sequelize.define("User", {
-    nickName: {
+    usuario: {
         type: DataTypes.STRING,
+        allowNull: false,
         unique: true,
-        allowNull: false
+        validate: {
+            notEmpty: true,
+            len: [3, 30]
+        }
     },
-
     email: {
         type: DataTypes.STRING,
+        allowNull: false,
         unique: true,
-        allowNull: false
+        validate: {
+            isEmail: true
+        }
     },
-
-    password: {
+    clave: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            len: [6, 50]
+        }
     }
 })
 

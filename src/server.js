@@ -4,6 +4,7 @@ const dotenv = require("dotenv")
 const swaggerUi = require("swagger-ui-express")
 const YAML = require("yamljs")
 
+const errorHandler = require("./middlewares/errorHandler")
 const { sequelize } = require("./models")
 
 const usersRoutes = require("./routes/users.routes")
@@ -33,16 +34,14 @@ app.use("/posts", postsRoutes)
 app.use("/comments", commentsRoutes)
 app.use("/tags", tagsRoutes)
 
+app.use(errorHandler)
+
 sequelize.sync({ alter: true })
-
-app.listen(process.env.PORT, () => {
-    console.log(`Servidor corriendo en puerto ${process.env.PORT}`)
-})
-
-app.get("/", (req, res) => {
-    res.send("Servidor funcionando")
-})
-
-app.listen(3000, () => {
-    console.log("Servidor corriendo en puerto 3000")
-})
+    .then(() => {
+        app.listen(process.env.PORT || 3000, () => {
+            console.log(`Servidor corriendo en puerto ${process.env.PORT || 3000}`)
+        })
+    })
+    .catch(error => {
+        console.error("Error al sincronizar la base de datos:", error)
+    })

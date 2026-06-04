@@ -2,10 +2,13 @@ const { DataTypes } = require("sequelize")
 const sequelize = require("../config/database")
 
 const Tag = sequelize.define("Tag", {
-    name: {
+    nnombre: {
         type: DataTypes.STRING,
+        allowNull: false,
         unique: true,
-        allowNull: false
+        validate: {
+            notEmpty: true
+        }
     }
 })
 

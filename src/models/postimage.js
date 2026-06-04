@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize")
 const sequelize = require("../config/database")
 
 const PostImage = sequelize.define("PostImage", {
-    imageUrl: {
+    urlImagen: {
         type: DataTypes.STRING,
         allowNull: false
     }

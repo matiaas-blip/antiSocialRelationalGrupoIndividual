@@ -3,135 +3,424 @@ openapi: 3.0.0
 info:
   title: UnaHur Anti Social Net
   version: 1.0.0
+  description: API REST para la red social UnaHur Anti Social Net
 
 servers:
   - url: http://localhost:3000
 
+tags:
+  - name: Usuarios
+  - name: Publicaciones
+  - name: Comentarios
+  - name: Etiquetas
+
 paths:
 
   /users:
-
     get:
-      summary: Obtener usuarios
-
+      tags:
+        - Usuarios
+      summary: Obtener todos los usuarios
       responses:
-        200:
+        '200':
           description: Lista de usuarios
 
     post:
+      tags:
+        - Usuarios
       summary: Crear usuario
-
       requestBody:
         required: true
-
         content:
           application/json:
             schema:
-              type: object
-
-              properties:
-                nickName:
-                  type: string
-
-                email:
-                  type: string
-
-                password:
-                  type: string
-
+              $ref: '#/components/schemas/Usuario'
       responses:
-        201:
+        '201':
           description: Usuario creado
 
-  /posts:
-
+  /users/{id}:
     get:
-      summary: Obtener posts
-
+      tags:
+        - Usuarios
+      summary: Obtener usuario por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
-        200:
-          description: Lista de posts
+        '200':
+          description: Usuario encontrado
+        '404':
+          description: Usuario no encontrado
 
-    post:
-      summary: Crear post
-
+    put:
+      tags:
+        - Usuarios
+      summary: Actualizar usuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '200':
+          description: Usuario actualizado
 
+    delete:
+      tags:
+        - Usuarios
+      summary: Eliminar usuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Usuario eliminado
+  /posts:
+    get:
+      tags:
+        - Publicaciones
+      summary: Obtener todas las publicaciones
+      responses:
+        '200':
+          description: Lista de publicaciones
+
+    post:
+      tags:
+        - Publicaciones
+      summary: Crear publicación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Publicacion'
+      responses:
+        '201':
+          description: Publicación creada
+
+  /posts/{id}:
+    get:
+      tags:
+        - Publicaciones
+      summary: Obtener publicación por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Publicación encontrada
+        '404':
+          description: Publicación no encontrada
+
+    put:
+      tags:
+        - Publicaciones
+      summary: Actualizar publicación
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Publicacion'
+      responses:
+        '200':
+          description: Publicación actualizada
+
+    delete:
+      tags:
+        - Publicaciones
+      summary: Eliminar publicación
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Publicación eliminada
+
+  /posts/{id}/images:
+    post:
+      tags:
+        - Publicaciones
+      summary: Subir imagen a publicación
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Imagen subida correctamente
+
+  /posts/{id}/tags:
+    post:
+      tags:
+        - Publicaciones
+      summary: Asociar etiqueta a publicación
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
               type: object
-
               properties:
-                description:
-                  type: string
-
-                UserId:
+                tagId:
                   type: integer
-
       responses:
-        201:
-          description: Post creado
-
+        '200':
+          description: Etiqueta asociada correctamente
   /comments:
-
     get:
-      summary: Obtener comentarios
-
+      tags:
+        - Comentarios
+      summary: Obtener todos los comentarios
       responses:
-        200:
+        '200':
           description: Lista de comentarios
 
     post:
+      tags:
+        - Comentarios
       summary: Crear comentario
-
       requestBody:
         required: true
-
         content:
           application/json:
             schema:
-              type: object
-
-              properties:
-                content:
-                  type: string
-
-                UserId:
-                  type: integer
-
-                PostId:
-                  type: integer
-
+              $ref: '#/components/schemas/Comentario'
       responses:
-        201:
+        '201':
           description: Comentario creado
 
-  /tags:
-
+  /comments/{id}:
     get:
-      summary: Obtener tags
-
+      tags:
+        - Comentarios
+      summary: Obtener comentario por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
-        200:
-          description: Lista de tags
+        '200':
+          description: Comentario encontrado
+        '404':
+          description: Comentario no encontrado
 
-    post:
-      summary: Crear tag
-
+    put:
+      tags:
+        - Comentarios
+      summary: Actualizar comentario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         required: true
-
         content:
           application/json:
             schema:
-              type: object
-
-              properties:
-                name:
-                  type: string
-
+              $ref: '#/components/schemas/Comentario'
       responses:
-        201:
-          description: Tag creada
+        '200':
+          description: Comentario actualizado
+
+    delete:
+      tags:
+        - Comentarios
+      summary: Eliminar comentario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Comentario eliminado
+
+  /tags:
+    get:
+      tags:
+        - Etiquetas
+      summary: Obtener todas las etiquetas
+      responses:
+        '200':
+          description: Lista de etiquetas
+
+    post:
+      tags:
+        - Etiquetas
+      summary: Crear etiqueta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Etiqueta'
+      responses:
+        '201':
+          description: Etiqueta creada
+
+  /tags/{id}:
+    get:
+      tags:
+        - Etiquetas
+      summary: Obtener etiqueta por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Etiqueta encontrada
+        '404':
+          description: Etiqueta no encontrada
+
+    put:
+      tags:
+        - Etiquetas
+      summary: Actualizar etiqueta
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Etiqueta'
+      responses:
+        '200':
+          description: Etiqueta actualizada
+
+    delete:
+      tags:
+        - Etiquetas
+      summary: Eliminar etiqueta
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Etiqueta eliminada
+  
+
+components:
+  schemas:
+
+    Usuario:
+      type: object
+      required:
+        - usuario
+        - email
+        - clave
+      properties:
+        usuario:
+          type: string
+          example: mati
+
+        email:
+          type: string
+          example: mati@gmail.com
+
+        clave:
+          type: string
+          example: 123456
+
+    Publicacion:
+      type: object
+      required:
+        - descripcion
+      properties:
+        descripcion:
+          type: string
+          example: Mi primer post
+
+        UserId:
+          type: integer
+          example: 1
+
+    Comentario:
+      type: object
+      required:
+        - contenido
+      properties:
+        contenido:
+          type: string
+          example: Excelente publicación
+
+        visible:
+          type: boolean
+          example: true
+
+        UserId:
+          type: integer
+          example: 1
+
+        PostId:
+          type: integer
+          example: 1
+
+    Etiqueta:
+      type: object
+      required:
+        - nombre
+      properties:
+        nombre:
+          type: string
+          example: programacion

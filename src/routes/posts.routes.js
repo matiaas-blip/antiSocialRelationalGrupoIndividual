@@ -135,7 +135,7 @@ router.post("/:id/images", upload.single("image"), async (req, res) => {
     }
 
     const image = await PostImage.create({
-        imageUrl: `/uploads/${req.file.filename}`,
+        urlImagen: `/uploads/${req.file.filename}`,
         PostId: req.params.id
     })
 

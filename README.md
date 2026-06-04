@@ -1,81 +1,155 @@
-# Red Anti-Social
+## UnaHur Anti-Social Net
 
-Se solicita el modelado y desarrollo de un sistema backend para una red social llamada **“UnaHur Anti-Social Net”**, inspirada en plataformas populares que permiten a los usuarios realizar publicaciones y recibir comentarios sobre las mismas.
+Backend desarrollado para la materia de Estrategias de Persistencia.
 
-![Imagen](./assets/ANTI-SOCIALNET.jpeg)
+El proyecto consiste en una red social estilo anti-social donde los usuarios pueden:
 
-# Contexto del Proyecto
+1. crear publicaciones
+2. comentar posts
+3. subir imágenes
+4. usar tags
+5. seguir usuarios.
+_________________________________________________________
 
-En una primera reunión con los sponsors del proyecto, se definieron los siguientes requerimientos para el desarrollo de un **MVP (Producto Mínimo Viable)**:
+# Tecnologías utilizadas
 
-- El sistema debe permitir que un usuario registrado realice una publicación (post), incluyendo **obligatoriamente una descripción**. De forma opcional, se podrán asociar **una o más imágenes** a dicha publicación.
+Node.js
+Express.js
+Sequelize
+SQLite
+Swagger
+Multer
+Dotenv
+_________________________________________________________
 
-- Las publicaciones pueden recibir **comentarios** por parte de otros usuarios.
+# Instalacion
 
-- Las publicaciones pueden estar asociadas a **etiquetas (tags)**. Una misma etiqueta puede estar vinculada a múltiples publicaciones.
+1. Clonar proyecto
+   - git clone URL_DEL_REPOSITORIO
 
-- Es importante que los **comentarios más antiguos que X meses** (valor configurable mediante variables de entorno, por ejemplo, 6 meses) **no se muestren** en la visualización de los posteos.
+2. Entrar a la carpeta 
+   - cd antiSocialRelationalGrupoIndividual
 
-####
+3. Instalar dependecias
+   - npm install
 
-# Entidades y Reglas de Negocio
+4. Ejecutar proyecto
+   - npm run dev
+_________________________________________________________
 
-Los sponsors definieron los siguientes nombres y descripciones para las entidades:
+# Swagger
 
-- **User**: Representa a los usuarios registrados en el sistema. El campo `nickName` debe ser **único** y funcionará como identificador principal del usuario.
+La documentación Swagger se encuentra en:
+   -   http://localhost:3000/api-docs
+_________________________________________________________
 
-- **Post**: Publicación realizada por un usuario en una fecha determinada que contiene el texto que desea publicar. Puede tener **cero o más imágenes** asociadas. Debe contemplarse la posibilidad de **agregar o eliminar imágenes** posteriormente.
+# Funcionalidades
 
-- **Post_Images**: Entidad que registra las imágenes asociadas a los posts. Para el MVP, solo se requiere almacenar la **URL de la imagen alojada**.
+1. Users
+   - Crear usuario
+   - Obtener usuarios
+   - Editar usuario
+   - Eliminar usuario
+2. Posts
+   - Crear publicaciones
+   - Obtener publicaciones
+   - Editar publicaciones
+   - Eliminar publicaciones
+3. Comments
+   - Crear comentarios
+   - Obtener comentarios
+   - Eliminar comentarios
+4. Tags
+   - Crear tags
+   - Asociar tags a posts
+   - Obtener tags
+5. Upload de imágenes
+Los posts permiten:
+   - subir imágenes
+   - asociar imágenes
+   - almacenar URLs
+Las imágenes se guardan en:   src/uploads
+_________________________________________________________
 
-- **Comment**: Comentario que un usuario puede realizar sobre una publicación. Incluye la fecha en la que fue realizado y una indicación de si está **visible o no**, dependiendo de la configuración (X meses).
+# Relaciones implementadas
 
-- **Tag**: Etiqueta que puede ser asignada a un post. Una etiqueta puede estar asociada a **muchos posts**, y un post puede tener **múltiples etiquetas**.
+1:N
 
-# Requerimientos Técnicos
+User → Posts
+User → Comments
+Post → Comments
+Post → Images
 
-1. **Modelado de Datos**
+N:M
 
-   - Diseñar el **Diagrama Entidad-Relación (DER)** considerando relaciones de tipo uno a muchos y muchos a muchos.
+Posts ↔ Tags
+Users ↔ Followers
+_________________________________________________________
 
-   - Además de las claves primarias, identificar en qué entidades se requiere una **clave única** (`unique key`), y definirla explícitamente.
+# Comentarios invisibles
 
-2. **Desarrollo del Backend**
+Los comentarios antiguos no se muestran automáticamente.
 
-   - Crear los **endpoints CRUD** necesarios para cada entidad.
+La cantidad de meses visibles se configura mediante:
+   - COMMENT_VISIBLE_MONTHS=6
+_________________________________________________________
 
-   - Implementar las rutas necesarias para gestionar las relaciones entre entidades (por ejemplo: asociar imágenes a un post, etiquetas a una publicación, etc.).
+# Base de datos
 
-   - Desarrollar las validaciones necesarias para asegurar la integridad de los datos (schemas, validaciones de integridad referencial).
+El proyecto utiliza SQLite mediante Sequelize.
 
-3. **Configuración y Portabilidad**
+Archivo generado: database.sqlite
+_________________________________________________________
 
-   - El sistema debe poder cambiar de **base de datos** de forma transparente, utilizando configuración e instalación de dependencias adecuadas.
+# Endpoints principales
 
-   - El sistema debe permitir configurar el **puerto de ejecución y variables de entorno** fácilmente.
+   - Users:
+      GET /users
+      POST /users
+      PUT /users/:id
+      DELETE /users/:id
 
-4. **Documentación**
+   - Posts: 
+      GET /posts
+      POST /posts
+      PUT /posts/:id
+      DELETE /posts/:id
 
-   - Generar la documentación de la API utilizando **Swagger (formato YAML)**, incluyendo todos los endpoints definidos.
+   - Comments:
+      GET /comments
+      POST /comments
+      DELETE /comments/:id
 
-5. **Colecciones de Prueba**
+   - Tags:
+      GET /tags
+      POST /tags
 
-   - Entregar las colecciones necesarias para realizar pruebas (por ejemplo, colecciones de Postman o archivos JSON de ejemplo).
+   - Upload imagenes:
+      POST /posts/:id/images
 
-###
+   - Asociacion tags:
+      POST /posts/:id/tags
+_________________________________________________________
 
-# Recomendaciones y ayudas
+# Estructura del proyecto
 
-Les entregamos este link que apunta a un front-end ya desarrollado para que puedan investigarlo y puedan crear el back-end que se ajuste lo máximo posible el funcionamiento del front.
+ src/
+ ├── config/
+ ├── models/
+ ├── routes/
+ ├── uploads/
+ ├── swagger/
+ └── server.js
 
-[https://unahur.vmdigitai.com/redes-front/users](https://unahur.vmdigitai.com/redes-front/users)
+ _________________________________________________________
 
-Por otro lado les dejamos la documentación de los endpoint para que también la puedan revisar y armar siguiendo este link
+ # Integrantes
+   - Abby Miramon
 
-[https://unahur.vmdigitai.com/swagger/](https://unahur.vmdigitai.com/swagger/)
+# Diagrama Entidad Relación
 
-# Bonus
+Ver archivo: assets/DER.png
 
-1. Hace el upload de las imágenes que se asocian a un POST que lo guarden en una carpeta de imágenes dentro del servidor web.
-2. ¿Cómo modelarías que un usuario pueda "seguir" a otros usuarios, y a su vez ser seguido por muchos? Followers
-3. Como la información de los post no varía muy seguido ¿Qué estrategias podrían utilizar para que la información no sea constantemente consultada desde la base de datos?
+# Coleccion de PostMan
+
+Ver archivo: assets/Unahur Anti Social Net.postman_collection.json

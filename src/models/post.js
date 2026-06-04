@@ -2,9 +2,13 @@ const { DataTypes } = require("sequelize")
 const sequelize = require("../config/database")
 
 const Post = sequelize.define("Post", {
-    description: {
+    descripcion: {
         type: DataTypes.TEXT,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+            len: [1, 1000]
+        }
     }
 })
 

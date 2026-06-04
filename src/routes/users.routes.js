@@ -20,20 +20,16 @@ router.get("/:id", async (req, res) => {
     res.json(user)
 })
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
     try {
         const user = await User.create(req.body)
         res.status(201).json(user)
     } catch (error) {
-        console.log(error)
-        res.status(400).json({
-            error: error.message,
-            details: error.errors
-        })
+        next(error)
     }
 })
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req, res, next) => {
     try {
 
         const user = await User.findByPk(req.params.id)
@@ -49,28 +45,82 @@ router.put("/:id", async (req, res) => {
         res.json(user)
 
     } catch (error) {
-
-        res.status(400).json({
-            error: error.message
-        })
+        next(error)
     }
 })
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res, next) => {
+    try {
 
-    const user = await User.findByPk(req.params.id)
+        const user = await User.findByPk(req.params.id)
 
-    if (!user) {
+        if (!user) {
+            return res.status(404).json({
+                error: "Usuario no encontrado"
+            })
+        }
+
+        await user.destroy()
+
+        res.json({
+            message: "Usuario eliminado"
+        })
+
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.post("/:id/seguir/:objetivoId", async (req, res) => {
+
+    const usuario = await User.findByPk(req.params.id)
+    const objetivo = await User.findByPk(req.params.objetivoId)
+
+    if (!usuario || !objetivo) {
         return res.status(404).json({
             error: "Usuario no encontrado"
         })
     }
 
-    await user.destroy()
+    await usuario.addSeguir(objetivo)
 
     res.json({
-        message: "Usuario eliminado"
+        mensaje: `${usuario.usuario} ahora sigue a ${objetivo.usuario}`
     })
+})
+
+router.get("/:id/seguir", async (req, res) => {
+
+    const usuario = await User.findByPk(req.params.id, {
+        include: {
+            association: "seguir"
+        }
+    })
+
+    if (!usuario) {
+        return res.status(404).json({
+            error: "Usuario no encontrado"
+        })
+    }
+
+    res.json(usuario.seguir)
+})
+
+router.get("/:id/seguidores", async (req, res) => {
+
+    const usuario = await User.findByPk(req.params.id, {
+        include: {
+            association: "seguidores"
+        }
+    })
+
+    if (!usuario) {
+        return res.status(404).json({
+            error: "Usuario no encontrado"
+        })
+    }
+
+    res.json(usuario.seguidores)
 })
 
 module.exports = router
